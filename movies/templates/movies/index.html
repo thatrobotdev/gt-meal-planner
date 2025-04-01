@@ -1,48 +1,190 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
 <div class="p-3">
   <div class="container">
     <div class="row mt-3">
       <div class="col mx-auto mb-3">
-        <h2>List of Movies</h2>
-        <hr />
-          <div>
-            <form method="GET">
-            <div class="row">
-            <div class="col-auto">
-            <div class="input-group col-auto">
-            <div class="input-group-text">
-            Search</div>
-            <input type="text" class="form-control" name="search" value="{{ request.GET.search }}">
-            </div>
-            </div>
-             <div class="col-auto">
-             <button class="btn bg-dark text-white" type="submit">Search</button>
-             </div>
-             </div>
-             </form>
-         </div>
+        <h2>Meal Plans</h2>
       </div>
+      <hr />
     </div>
+
+    <!-- Cards Section -->
     <div class="row">
-      {% if template_data.movies.exists %}
-        {% for movie in template_data.movies %}
-          <div class="col-md-4 col-lg-3 mb-2">
-            <div class="p-2 card align-items-center pt-4">
-                <img src="{{ movie.image.url }}" class="card-img-top rounded img-card-200">
-              <div class="card-body text-center">
-                <a href="{% url 'movies.show' id=movie.id %}" class="btn bg-dark text-white">
-                  {{ movie.name }}
-                </a>
-              </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title text-center">First-Year Everyday Unlimited</h4>
+            <ul class="list-group list-group-flush mt-3">
+              <li class="list-group-item">Price: <span>$2977.00</span></li>
+              <li class="list-group-item">Dining Dollars: <span>$250.00</span></li>
+              <li class="list-group-item">Meal Swipes: <span>Unlimited</span></li>
+              <li class="list-group-item">Guest Meals: <span>5</span></li>
+            </ul>
+            <div class="mt-3 text-center">
+              <button type="button" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
             </div>
           </div>
-        {% endfor %}
-      {% else %}
-        <div class="col-12 text-center">
-          <p>We're sorry but it looks like we don't carry that title!</p>
         </div>
-      {% endif %}
+      </div>
+
+
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title text-center">First-Year Flex</h4>
+            <ul class="list-group list-group-flush mt-3">
+              <li class="list-group-item">Price: <span>$2977.00</span></li>
+              <li class="list-group-item">Dining Dollars: <span>$812.00</span></li>
+              <li class="list-group-item">Meal Swipes: <span>200</span></li>
+              <li class="list-group-item">Guest Meals: <span>0</span></li>
+            </ul>
+            <div class="mt-3 text-center">
+              <button type="button" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title text-center">Greek 100 Meal Plan</h4>
+            <ul class="list-group list-group-flush mt-3">
+              <li class="list-group-item">Price: <span>$1524.00</span></li>
+              <li class="list-group-item">Dining Dollars: <span>$100</span></li>
+              <li class="list-group-item">Meal Swipes: <span>100</span></li>
+              <li class="list-group-item">Guest Meals: <span>0</span></li>
+            </ul>
+            <div class="mt-3 text-center">
+              <button type="button" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 dining-dollar-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="card-title mb-0">Dining Dollar Plans</h4>
+              <select class="form-select w-auto" id="diningDollarSelect">
+                <option value="50" selected>Dining Dollar 50</option>
+                <option value="100">Dining Dollar 100</option>
+                <option value="200">Dining Dollar 200</option>
+                <option value="400">Dining Dollar 400</option>
+                <option value="600">Dining Dollar 600</option>
+              </select>
+            </div>
+            <ul class="list-group list-group-flush mt-3">
+              <li class="list-group-item">Price: <span class="dining-dollar-price">$[Price]</span></li>
+              <li class="list-group-item">Dining Dollars: <span class="dining-dollar-value">[Dining Dollars]</span></li>
+              <li class="list-group-item">Meal Swipes: <span class="dining-dollar-meal-swipes">[Meal Swipes]</span></li>
+              <li class="list-group-item">Guest Meals: <span class="dining-dollar-guest-meals">[Guest Meals]</span></li>
+            </ul>
+            <div class="mt-3 text-center">
+              <button type="button" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 meal-plan-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="card-title mb-0">Meal Pass</h4>
+              <select class="form-select w-auto" id="mealPlanSelect">
+                <option value="50" selected>Meal Plan 50</option>
+                <option value="100">Meal Plan 100</option>
+                <option value="150">Meal Plan 150</option>
+                <option value="200">Meal Plan 200</option>
+              </select>
+            </div>
+            <ul class="list-group list-group-flush mt-3">
+              <li class="list-group-item">Price: <span class="meal-plan-price">$[Price]</span></li>
+              <li class="list-group-item">Dining Dollars: <span class="meal-plan-dining-dollars">$[Price]</span></li>
+              <li class="list-group-item">Meal Swipes: <span class="meal-plan-meal-swipes">[Meal Swipes]</span></li>
+              <li class="list-group-item">Guest Meals: <span class="meal-plan-guest-meals">[Guest Meals]</span></li>
+            </ul>
+            <div class="mt-3 text-center">
+              <button type="button" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  
 </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const diningDollarPlans = {
+    "50": { price: "$50", diningDollars: "$50", mealSwipes: "0", guestMeals: "0" },
+    "100": { price: "$100", diningDollars: "$100", mealSwipes: "0", guestMeals: "0" },
+    "200": { price: "$200", diningDollars: "$200", mealSwipes: "0", guestMeals: "0" },
+    "400": { price: "$400", diningDollars: "$440", mealSwipes: "0", guestMeals: "0" },
+    "600": { price: "$600", diningDollars: "$660", mealSwipes: "0", guestMeals: "0" }
+  };
+
+  const mealPlanOptions = {
+    "50": { price: "$581.00", diningDollarPlans: "$0", mealSwipes: "50", guestMeals: "[Guest Meals for 50]" },
+    "100": { price: "$1314.00", diningDollarPlans: "$100", mealSwipes: "100", guestMeals: "[Guest Meals for 100]" },
+    "150": { price: "$1867.00", diningDollarPlans: "$150", mealSwipes: "150", guestMeals: "[Guest Meals for 150]" },
+    "200": { price: "$2415.00", diningDollarPlans: "$200", mealSwipes: "200", guestMeals: "[Guest Meals for 200]" }
+  };
+
+  function updateDiningDollarCard(value) {
+    const data = diningDollarPlans[value];
+    const card = document.querySelector('.dining-dollar-card');
+    if (card && data) {
+      card.querySelector('.dining-dollar-price').innerText = data.price;
+      card.querySelector('.dining-dollar-value').innerText = data.diningDollars;
+      card.querySelector('.dining-dollar-meal-swipes').innerText = data.mealSwipes;
+      card.querySelector('.dining-dollar-guest-meals').innerText = data.guestMeals;
+    }
+  }
+
+  function updateMealPlanCard(value) {
+    const data = mealPlanOptions[value];
+    const card = document.querySelector('.meal-plan-card');
+    if (card && data) {
+      card.querySelector('.meal-plan-price').innerText = data.price;
+      card.querySelector('.meal-plan-dining-dollars').innerText = data.diningDollarPlans;
+      card.querySelector('.meal-plan-meal-swipes').innerText = data.mealSwipes;
+      card.querySelector('.meal-plan-guest-meals').innerText = data.guestMeals;
+    }
+  }
+
+  document.getElementById('diningDollarSelect').addEventListener('change', function(){
+    updateDiningDollarCard(this.value);
+  });
+
+  document.getElementById('mealPlanSelect').addEventListener('change', function(){
+    updateMealPlanCard(this.value);
+  });
+
+  updateDiningDollarCard("50");
+  updateMealPlanCard("50");
+});
+
+
+function selectPlan(button) {
+  var card = button.closest('.card');
+  var planTitle = card.querySelector('.card-title').innerText.trim();
+  
+  var details = [];
+  card.querySelectorAll('.list-group-item').forEach(function(item) {
+    details.push(item.innerText);
+  });
+  
+  alert("Selected Plan: " + planTitle);
+}
+</script>
 {% endblock content %}
