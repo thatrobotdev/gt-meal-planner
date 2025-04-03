@@ -56,6 +56,8 @@ initial-scale=1"
               {% if user.is_authenticated %}
                  <a class="nav-link"
                  href="{% url 'accounts.logout' %}">Logout ({{user.username }})</a>
+                 <a class="nav-link" href="{% url 'accounts.baseplans' %}">Base Plans</a>
+                 <a class="nav-link" href="{% url 'accounts.plandetails' %}">Input Plan Details</a>
               {% else %}
               <a class="nav-link"
                 href="{% url 'accounts.login' %}">Login</a>

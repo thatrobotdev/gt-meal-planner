@@ -9,7 +9,7 @@ class Profile(models.Model):
         return self.user.username
 
 class MealPlan(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name="meal_plan")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     meal_swipes = models.IntegerField(default=0)
     dining_dollars = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     start_date = models.DateField(null=True, blank=True)

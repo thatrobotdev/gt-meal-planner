@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-8 offset-md-2">
+        <h2>Input Current Plan Details</h2>
+        <hr />
+        <form method="POST">
+          {% csrf_token %}
+          <!-- Swipes Input -->
+          <div class="mb-3">
+            <label for="swipes" class="form-label">
+              How many swipes do you have left?
+              <span style="color: gray">(Enter 999 for unlimited plan)</span>
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="swipes"
+              name="swipes"
+              min="0"
+              placeholder="Enter remaining swipes"
+            />
+          </div>
+          <!-- Dining Dollars Input with Input Group -->
+          <div class="mb-3">
+            <label for="dining_dollars" class="form-label"
+              >How many dining dollars do you have left?</label
+            >
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input
+                type="number"
+                class="form-control"
+                id="dining_dollars"
+                name="dining_dollars"
+                min="0"
+                step="any"
+                placeholder="Enter remaining dining dollars"
+              />
+            </div>
+          </div>
+          <!-- Plan Start Date Field -->
+          <div class="mb-3">
+            <label for="plan_start" class="form-label">Plan Start Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="plan_start"
+              name="plan_start"
+              required
+            />
+          </div>
+          <!-- Plan End Date Field -->
+          <div class="mb-3">
+            <label for="plan_end" class="form-label">Plan End Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="plan_end"
+              name="plan_end"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
