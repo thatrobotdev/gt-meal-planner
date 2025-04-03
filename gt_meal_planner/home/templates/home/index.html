@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+
+<header class="masthead bg-index text-center py-4">
+  <div class="container d-flex align-items-center flex-column pt-2">
+    <h2>GT Meal Planner</h2>
+    <p>Track your spending with ease!</p>
+  </div>
+</header>
+{% if not user.is_authenticated %}
+<div class="container d-flex align-items-center flex-column pt-2">
+  <p>Sign In and Input Meal Plan Details for Analysis</p>
+</div>
+{% endif %} {% if user.is_authenticated %}
+<!-- add meal plan info, swipes, etc-->
+<div class="container d-flex align-items-center flex-column pt-2">
+  <p>to be implemented</p>
+</div>
+{% endif %} {% endblock content %}
