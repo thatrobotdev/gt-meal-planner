@@ -21,3 +21,9 @@ class Item(models.Model):
     def __str__(self):
         return str(self.id) + ' - ' + self.movie.name
 
+class MealPlan(models.Model):
+    swipes = models.IntegerField()
+    dining_dollars = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.id) + ' - ' + self.user.username
