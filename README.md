@@ -6,9 +6,15 @@ Built by [Aryamann Sheoran](https://linkedin.com/in/aryamann-sheoran), [James Ke
 
 # Setup
 git clone https://github.com/mwittland/gt-meal-planner.git
+
 cd gt-meal-planner
+
 python -m venv venv
+
 venv/Scripts/Activate
+
 pip install django
+
 cd gt_meal_planner
+
 python manage.py runserver
