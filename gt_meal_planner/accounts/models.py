@@ -16,5 +16,5 @@ class MealPlan(models.Model):
     end_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return self.profile.user.username + "'s Meal Plan"
+        return self.user.username + "'s Meal Plan"
     
