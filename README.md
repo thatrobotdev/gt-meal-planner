@@ -18,3 +18,6 @@ pip install django
 cd gt_meal_planner
 
 python manage.py runserver
+
+# Admin Access
+/admin/login
