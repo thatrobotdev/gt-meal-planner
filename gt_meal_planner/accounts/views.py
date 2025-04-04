@@ -59,13 +59,6 @@ def signup(request):
             template_data['form'] = form
             return render(request, 'accounts/signup.html', {'template_data': template_data})
 
-@login_required
-def orders(request):
-    template_data = {}
-    template_data['title'] = 'Orders'
-    template_data['orders'] = request.user.order_set.all()
-    return render(request, 'accounts/orders.html', {'template_data': template_data})
-
 def reset_password(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -89,8 +82,13 @@ def baseplans(request):
     return render(request, 'accounts/baseplans.html')
 
 def plandetails(request):
+    template_data = {}
     user = request.user
     meal_plan, created = MealPlan.objects.get_or_create(user=user)
+    template_data['swipes'] = meal_plan.meal_swipes
+    template_data['dollars'] = meal_plan.dining_dollars
+    template_data['start'] = meal_plan.start_date
+    template_data['end'] = meal_plan.end_date
     if request.method == 'POST':
         meal_swipes = request.POST.get('swipes')
         dining_dollars = request.POST.get('dining_dollars')
@@ -102,4 +100,4 @@ def plandetails(request):
         meal_plan.end_date = end_date
         meal_plan.save()
         return redirect('home.index')
-    return render(request, 'accounts/plandetails.html')
+    return render(request, 'accounts/plandetails.html', {'template_data': template_data})

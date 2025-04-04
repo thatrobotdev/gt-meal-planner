@@ -19,7 +19,8 @@
               id="swipes"
               name="swipes"
               min="0"
-              placeholder="Enter remaining swipes"
+              placeholder="{{ template_data.swipes }}"
+              required
             />
           </div>
           <!-- Dining Dollars Input with Input Group -->
@@ -36,13 +37,17 @@
                 name="dining_dollars"
                 min="0"
                 step="any"
-                placeholder="Enter remaining dining dollars"
+                placeholder="{{ template_data.dollars }}"
+                required
               />
             </div>
           </div>
           <!-- Plan Start Date Field -->
           <div class="mb-3">
-            <label for="plan_start" class="form-label">Plan Start Date</label>
+            <label for="plan_start" class="form-label"
+              >Plan Start Date{% if template_data.start %} (Current Start Date :
+              {{template_data.start}}){%endif%}</label
+            >
             <input
               type="date"
               class="form-control"
@@ -53,7 +58,10 @@
           </div>
           <!-- Plan End Date Field -->
           <div class="mb-3">
-            <label for="plan_end" class="form-label">Plan End Date</label>
+            <label for="plan_end" class="form-label"
+              >Plan End Date {% if template_data.end %} (Current End Date:
+              {{template_data.end}}){%endif%}</label
+            >
             <input
               type="date"
               class="form-control"
