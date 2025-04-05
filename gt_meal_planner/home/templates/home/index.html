@@ -10,9 +10,20 @@
 <div class="container d-flex align-items-center flex-column pt-2">
   <p>Sign In and Input Meal Plan Details for Analysis</p>
 </div>
-{% endif %} {% if user.is_authenticated %}
+{% endif %} {% if user.is_authenticated and not template_data.swipes %}
 <!-- add meal plan info, swipes, etc-->
 <div class="container d-flex align-items-center flex-column pt-2">
-  <p>to be implemented</p>
+  <p>Hello, {{template_data.username}}!</p>
+  <p>Please Enter Your Meal Plan Details for Analysis</p>
+</div>
+{% endif %} {% if user.is_authenticated and template_data.swipes %}
+<div class="container d-flex align-items-center flex-column pt-2">
+  <p>Hello, {{template_data.username}}!</p>
+  <p>You have {{template_data.swipes}} swipes remaining.</p>
+  <p>You have {{template_data.dollars}} dining dollars remaining.</p>
+  <p>
+    Your meal plan started on {{template_data.start}} and ends on
+    {{template_data.end}}.
+  </p>
 </div>
 {% endif %} {% endblock content %}
