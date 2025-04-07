@@ -5,6 +5,7 @@ from .forms import CustomUserCreationForm, CustomErrorList
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from accounts.models import MealPlan
+from datetime import datetime
 
 def login_view(request):
     context = {}
@@ -79,6 +80,18 @@ def reset_password(request):
     return render(request, 'accounts/reset_password.html')
 
 def baseplans(request):
+    if request.method == 'POST':
+        print(request.POST.get('dollars'))
+        user = request.user
+        meal_plan, created = MealPlan.objects.get_or_create(user=user)
+        meal_swipes = request.POST.get('swipes')
+        dining_dollars = request.POST.get('dollars')
+        meal_plan.meal_swipes = int(meal_swipes)
+        meal_plan.dining_dollars = float(dining_dollars)
+        meal_plan.start_date = datetime.strptime("03/01/2025", "%d/%m/%Y").date()
+        meal_plan.end_date = datetime.strptime("01/05/2025", "%d/%m/%Y").date()
+        meal_plan.save()
+        return redirect('home.index')
     return render(request, 'accounts/baseplans.html')
 
 def plandetails(request):
