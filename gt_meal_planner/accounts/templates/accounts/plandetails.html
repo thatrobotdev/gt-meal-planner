@@ -1,17 +1,25 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
 <div class="p-3">
   <div class="container">
     <div class="row mt-3">
       <div class="col-md-8 offset-md-2">
-        <h2>Input Current Plan Details</h2>
+        <h2>Input Spending</h2>
         <hr />
         <form method="POST">
           {% csrf_token %}
-          <!-- Swipes Input -->
           <div class="mb-3">
-            <label for="swipes" class="form-label">
-              How many swipes do you have left?
-              <span style="color: gray">(Enter 999 for unlimited plan)</span>
+            <label class="form-label">What did you spend?</label>
+            <select id="spending_type" name="spending_type" class="form-select">
+              <option value="swipes">Swipes</option>
+              <option value="dining_dollars">Dining Dollars</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="swipes-container">
+            <label class="form-label">
+              How many swipes did you use?
             </label>
             <input
               type="number"
@@ -19,15 +27,15 @@
               id="swipes"
               name="swipes"
               min="0"
-              placeholder="{{ template_data.swipes }}"
+              placeholder="e.g. 1"
               required
             />
           </div>
-          <!-- Dining Dollars Input with Input Group -->
-          <div class="mb-3">
-            <label for="dining_dollars" class="form-label"
-              >How many dining dollars do you have left?</label
-            >
+
+          <div class="mb-3" id="dining-container" style="display: none;">
+            <label for="dining_dollars" class="form-label">
+              How many dining dollars did you spend?
+            </label>
             <div class="input-group">
               <span class="input-group-text">$</span>
               <input
@@ -37,17 +45,15 @@
                 name="dining_dollars"
                 min="0"
                 step="any"
-                placeholder="{{ template_data.dollars }}"
                 required
               />
             </div>
           </div>
-          <!-- Plan Start Date Field -->
+
           <div class="mb-3">
-            <label for="plan_start" class="form-label"
-              >Plan Start Date{% if template_data.start %} (Current Start Date :
-              {{template_data.start}}){%endif%}</label
-            >
+            <label class="form-label">
+              Purchase Date
+            </label>
             <input
               type="date"
               class="form-control"
@@ -56,24 +62,36 @@
               required
             />
           </div>
-          <!-- Plan End Date Field -->
-          <div class="mb-3">
-            <label for="plan_end" class="form-label"
-              >Plan End Date {% if template_data.end %} (Current End Date:
-              {{template_data.end}}){%endif%}</label
-            >
-            <input
-              type="date"
-              class="form-control"
-              id="plan_end"
-              name="plan_end"
-              required
-            />
-          </div>
+
           <button type="submit" class="btn btn-primary">Submit</button>
+
         </form>
       </div>
     </div>
   </div>
 </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const spendingType = document.getElementById("spending_type");
+    const swipesContainer = document.getElementById("swipes-container");
+    const diningContainer = document.getElementById("dining-container");
+
+
+    function toggleInputFields() {
+      if (spendingType.value === "swipes") {
+        swipesContainer.style.display = "block";
+        diningContainer.style.display = "none";
+      } else if (spendingType.value === "dining_dollars") {
+        swipesContainer.style.display = "none";
+        diningContainer.style.display = "block";
+      }
+    }
+
+    spendingType.addEventListener("change", toggleInputFields);
+
+    toggleInputFields();
+  });
+</script>
 {% endblock content %}

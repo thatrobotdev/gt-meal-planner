@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
 <div class="p-3">
   <div class="container">
     <div class="row mt-3">
@@ -11,9 +13,9 @@
 
     <!-- Cards Section -->
     <div class="row">
-      <form method="POST">
-        {% csrf_token %}
-        <div class="col-md-4 col-lg-3 mb-4">
+      <div class="col-md-4 col-lg-3 mb-4">
+        <form method="POST">
+          {% csrf_token %}
           <div class="card h-100">
             <div class="card-body">
               <h4 class="card-title text-center">
@@ -42,11 +44,12 @@
               </div>
             </div>
           </div>
-        </div>
-      </form>
-      <form method="POST">
-        {% csrf_token %}
-        <div class="col-md-4 col-lg-3 mb-4">
+        </form>
+      </div>
+      
+      <div class="col-md-4 col-lg-3 mb-4">
+        <form method="POST">
+          {% csrf_token %}
           <div class="card h-100">
             <div class="card-body">
               <h4 class="card-title text-center">First-Year Flex</h4>
@@ -71,11 +74,12 @@
               </div>
             </div>
           </div>
-        </div>
-      </form>
-      <form method="POST">
-        {% csrf_token %}
-        <div class="col-md-4 col-lg-3 mb-4">
+        </form>
+      </div>
+      
+      <div class="col-md-4 col-lg-3 mb-4">
+        <form method="POST">
+          {% csrf_token %}
           <div class="card h-100">
             <div class="card-body">
               <h4 class="card-title text-center">Greek 100 Meal Plan</h4>
@@ -100,11 +104,12 @@
               </div>
             </div>
           </div>
-        </div>
-      </form>
-      <form method="POST">
-        {% csrf_token %}
-        <div class="col-md-4 col-lg-3 mb-4">
+        </form>
+      </div>
+      
+      <div class="col-md-4 col-lg-3 mb-4">
+        <form method="POST">
+          {% csrf_token %}
           <div class="card h-100 dining-dollar-card">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
@@ -176,11 +181,12 @@
               </div>
             </div>
           </div>
-        </div>
-      </form>
-      <form method="POST">
-        {% csrf_token %}
-        <div class="col-md-4 col-lg-3 mb-4">
+        </form>
+      </div>
+      
+      <div class="col-md-4 col-lg-3 mb-4">
+        <form method="POST">
+          {% csrf_token %}
           <div class="card h-100 meal-plan-card">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
@@ -257,8 +263,8 @@
               </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
