@@ -5,7 +5,7 @@ from .forms import CustomUserCreationForm, CustomErrorList
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from accounts.models import MealPlan
-from datetime import datetime
+from datetime import datetime, date
 
 def login_view(request):
     context = {}
@@ -43,7 +43,16 @@ def login(request):
             return render(request, 'accounts/login.html', {'template_data': template_data})
         else:
             auth_login(request, user)
-            return redirect('home.index')
+            check_start = date(2025, 1, 3)
+            check_end = date(2025, 5, 1)
+            if user.meal_plans.exists():
+                latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+                start = latest_meal_plan.start_date
+                end = latest_meal_plan.end_date
+                if end < check_start:
+                    return redirect('accounts.baseplans')
+                return redirect('home.index')
+            return redirect('accounts.baseplans')
 
 def signup(request):
     template_data = {}
@@ -80,6 +89,20 @@ def reset_password(request):
     return render(request, 'accounts/reset_password.html')
 
 def baseplans(request):
+    template_data = {}
+    user = request.user
+    if user.meal_plans.exists():
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        start = latest_meal_plan.start_date
+        end = latest_meal_plan.end_date
+        check_start = date(2025, 1, 3)
+        if end < check_start:
+            template_data['active'] = False
+        else:
+            template_data['active'] = True
+    else:
+        template_data['active'] = False
+
     if request.method == 'POST':
         print(request.POST.get('dollars'))
         user = request.user
@@ -90,27 +113,26 @@ def baseplans(request):
         meal_plan.dining_dollars = float(dining_dollars)
         meal_plan.start_date = datetime.strptime("03/01/2025", "%d/%m/%Y").date()
         meal_plan.end_date = datetime.strptime("01/05/2025", "%d/%m/%Y").date()
+        meal_plan.current_dollars = meal_plan.dining_dollars
+        meal_plan.current_swipes = meal_plan.meal_swipes
         meal_plan.save()
         return redirect('home.index')
-    return render(request, 'accounts/baseplans.html')
+    return render(request, 'accounts/baseplans.html', {'template_data': template_data})
 
-def plandetails(request):
+def inputspending(request):
+    #I still need to update this view
+    #I need to make it so users can only add a purchase if they have an active meal plan
+    #Their active meal plan also must have a sufficient remaining swipe or dollars
+    #The time frame of the purchase also must be within the active meal plan
+    #It wont be necessary for users to be able to add purchases on past meal plans
+    #We will just create demo models
     template_data = {}
     user = request.user
-    meal_plan, created = MealPlan.objects.get_or_create(user=user)
-    template_data['swipes'] = meal_plan.meal_swipes
-    template_data['dollars'] = meal_plan.dining_dollars
-    template_data['start'] = meal_plan.start_date
-    template_data['end'] = meal_plan.end_date
+    
     if request.method == 'POST':
         meal_swipes = request.POST.get('swipes')
         dining_dollars = request.POST.get('dining_dollars')
-        start_date = request.POST.get('plan_start')
-        end_date = request.POST.get('plan_end')
-        meal_plan.meal_swipes = int(meal_swipes)
-        meal_plan.dining_dollars = float(dining_dollars)
-        meal_plan.start_date = start_date
-        meal_plan.end_date = end_date
-        meal_plan.save()
+        date = request.POST.get('date')
+        
         return redirect('home.index')
-    return render(request, 'accounts/plandetails.html', {'template_data': template_data})
+    return render(request, 'accounts/inputspending.html', {'template_data': template_data})

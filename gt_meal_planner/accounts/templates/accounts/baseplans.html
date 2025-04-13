@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% block content %}
-{% load static %}
+{% extends 'base.html' %} {% block content %} {% load static %}
 <style>
   .main-content {
     max-width: 1200px !important;
@@ -15,7 +13,7 @@
       </div>
       <hr />
     </div>
-
+    {% if not template_data.active %}
     <div class="row">
       <div class="col-md-4 mb-4">
         <form method="POST">
@@ -24,7 +22,6 @@
             <div class="card-body">
               <h4 class="card-title text-center">
                 First-Year Everyday Unlimited
-                
               </h4>
               <ul class="list-group list-group-flush mt-3">
                 <li class="list-group-item">Price: <span>$2977.00</span></li>
@@ -37,7 +34,13 @@
                 <li class="list-group-item">Guest Meals: <span>5</span></li>
               </ul>
               <div class="mt-3 text-center">
-                <button type="submit" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary select-plan-btn"
+                  onclick="selectPlan(this)"
+                >
+                  Select Plan
+                </button>
                 <input type="hidden" name="dollars" value="250" />
                 <input type="hidden" name="swipes" value="999" />
               </div>
@@ -45,14 +48,14 @@
           </div>
         </form>
       </div>
-      
+
       <div class="col-md-4 mb-4">
         <form method="POST">
           {% csrf_token %}
           <div class="card h-100">
             <div class="card-body">
               <h4 class="card-title text-center">First-Year Flex</h4>
-              <br>
+              <br />
               <ul class="list-group list-group-flush mt-3">
                 <li class="list-group-item">Price: <span>$2977.00</span></li>
                 <li class="list-group-item">
@@ -62,7 +65,13 @@
                 <li class="list-group-item">Guest Meals: <span>0</span></li>
               </ul>
               <div class="mt-3 text-center">
-                <button type="submit" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary select-plan-btn"
+                  onclick="selectPlan(this)"
+                >
+                  Select Plan
+                </button>
                 <input type="hidden" name="dollars" value="812" />
                 <input type="hidden" name="swipes" value="200" />
               </div>
@@ -70,14 +79,14 @@
           </div>
         </form>
       </div>
-      
+
       <div class="col-md-4 mb-4">
         <form method="POST">
           {% csrf_token %}
           <div class="card h-100">
             <div class="card-body">
               <h4 class="card-title text-center">Greek 100 Meal Plan</h4>
-              <br>
+              <br />
               <ul class="list-group list-group-flush mt-3">
                 <li class="list-group-item">Price: <span>$1524.00</span></li>
                 <li class="list-group-item">
@@ -87,7 +96,13 @@
                 <li class="list-group-item">Guest Meals: <span>0</span></li>
               </ul>
               <div class="mt-3 text-center">
-                <button type="submit" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary select-plan-btn"
+                  onclick="selectPlan(this)"
+                >
+                  Select Plan
+                </button>
                 <input type="hidden" name="dollars" value="100" />
                 <input type="hidden" name="swipes" value="100" />
               </div>
@@ -105,7 +120,11 @@
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <h4 class="card-title mb-0">Dining Dollar Plans</h4>
-                <select class="form-select w-auto" id="diningDollarSelect" onchange="updateDollars(this.value)">
+                <select
+                  class="form-select w-auto"
+                  id="diningDollarSelect"
+                  onchange="updateDollars(this.value)"
+                >
                   <option value="50" selected>Dining Dollar 50</option>
                   <option value="100">Dining Dollar 100</option>
                   <option value="200">Dining Dollar 200</option>
@@ -151,15 +170,26 @@
                 </li>
               </ul>
               <div class="mt-3 text-center">
-                <button type="submit" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary select-plan-btn"
+                  onclick="selectPlan(this)"
+                >
+                  Select Plan
+                </button>
                 <input type="hidden" name="swipes" value="0" />
-                <input type="hidden" name="dollars" id="dollars-input" value="50" />
+                <input
+                  type="hidden"
+                  name="dollars"
+                  id="dollars-input"
+                  value="50"
+                />
               </div>
             </div>
           </div>
         </form>
       </div>
-      
+
       <div class="col-md-6 mb-4">
         <form method="POST">
           {% csrf_token %}
@@ -167,7 +197,11 @@
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <h4 class="card-title mb-0">Meal Pass</h4>
-                <select class="form-select w-auto" id="mealPlanSelect" onchange="updateValues(this.value)">
+                <select
+                  class="form-select w-auto"
+                  id="mealPlanSelect"
+                  onchange="updateValues(this.value)"
+                >
                   <option value="50" selected>Meal Plan 50</option>
                   <option value="100">Meal Plan 100</option>
                   <option value="150">Meal Plan 150</option>
@@ -213,15 +247,34 @@
                 </li>
               </ul>
               <div class="mt-3 text-center">
-                <button type="submit" class="btn btn-primary select-plan-btn" onclick="selectPlan(this)">Select Plan</button>
-                <input type="hidden" name="swipes" id="input-swipesB" value="50" />
-                <input type="hidden" name="dollars" id="input-dollarsB" value="0" />
+                <button
+                  type="submit"
+                  class="btn btn-primary select-plan-btn"
+                  onclick="selectPlan(this)"
+                >
+                  Select Plan
+                </button>
+                <input
+                  type="hidden"
+                  name="swipes"
+                  id="input-swipesB"
+                  value="50"
+                />
+                <input
+                  type="hidden"
+                  name="dollars"
+                  id="input-dollarsB"
+                  value="0"
+                />
               </div>
             </div>
           </div>
         </form>
       </div>
     </div>
+    {% endif %} {% if template_data.active %}
+    <p>Meal Plan Already Selected</p>
+    {% endif %}
   </div>
 </div>
 
@@ -292,9 +345,12 @@
       const card = document.querySelector(".dining-dollar-card");
       if (card && data) {
         card.querySelector(".dining-dollar-price").innerText = data.price;
-        card.querySelector(".dining-dollar-value").innerText = data.diningDollars;
-        card.querySelector(".dining-dollar-meal-swipes").innerText = data.mealSwipes;
-        card.querySelector(".dining-dollar-guest-meals").innerText = data.guestMeals;
+        card.querySelector(".dining-dollar-value").innerText =
+          data.diningDollars;
+        card.querySelector(".dining-dollar-meal-swipes").innerText =
+          data.mealSwipes;
+        card.querySelector(".dining-dollar-guest-meals").innerText =
+          data.guestMeals;
       }
     }
 
@@ -303,19 +359,26 @@
       const card = document.querySelector(".meal-plan-card");
       if (card && data) {
         card.querySelector(".meal-plan-price").innerText = data.price;
-        card.querySelector(".meal-plan-dining-dollars").innerText = data.diningDollarPlans;
-        card.querySelector(".meal-plan-meal-swipes").innerText = data.mealSwipes;
-        card.querySelector(".meal-plan-guest-meals").innerText = data.guestMeals;
+        card.querySelector(".meal-plan-dining-dollars").innerText =
+          data.diningDollarPlans;
+        card.querySelector(".meal-plan-meal-swipes").innerText =
+          data.mealSwipes;
+        card.querySelector(".meal-plan-guest-meals").innerText =
+          data.guestMeals;
       }
     }
 
-    document.getElementById("diningDollarSelect").addEventListener("change", function () {
-      updateDiningDollarCard(this.value);
-    });
+    document
+      .getElementById("diningDollarSelect")
+      .addEventListener("change", function () {
+        updateDiningDollarCard(this.value);
+      });
 
-    document.getElementById("mealPlanSelect").addEventListener("change", function () {
-      updateMealPlanCard(this.value);
-    });
+    document
+      .getElementById("mealPlanSelect")
+      .addEventListener("change", function () {
+        updateMealPlanCard(this.value);
+      });
 
     updateDiningDollarCard("50");
     updateMealPlanCard("50");
