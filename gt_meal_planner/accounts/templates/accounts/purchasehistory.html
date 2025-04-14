@@ -5,7 +5,29 @@
   {% elif template_data.noPurchases %}
   <p>No Purchases Have Been Made For The Active Plan</p>
   {% else %}
-  <p>Here are your purchases</p>
-  {% endif %}
+  <h1>Purchase List</h1>
+  {% for purchase in template_data.purchases %}
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="purchase_id" value="{{ purchase.id }}" />
+    <div class="container">
+      <div class="card h-100">
+        <div class="row mt-3">
+          <div class="col mx-auto mb-3">
+            <p>Purchase Date: {{purchase.date}}</p>
+            {% if purchase.swipe_cost %}
+            <p>{{purchase.swipe_cost}} Swipes</p>
+            {% endif %} {% if purchase.dollars_cost %}
+            <p>${{purchase.dollars_cost }} Dining Dollars</p>
+            {% endif %}
+            <button type="submit" class="btn btn-primary select-plan-btn">
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  {% endfor %} {% endif %}
 </div>
 {% endblock content %}

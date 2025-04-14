@@ -198,6 +198,14 @@ def purchasehistory(request):
     if not template_data['noPurchases']:
         #add purchases to template data
         #create front end for them with edit buttons
-        print("test")
-
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        template_data['purchases'] = latest_meal_plan.purchases.order_by('-date').all()
+    if request.method == "POST":
+        purchase_id = request.POST.get("purchase_id")
+        print(purchase_id)
+        return redirect('accounts.editpurchase', purchase_id = purchase_id)
     return render(request, 'accounts/purchasehistory.html', {'template_data': template_data})
+def editpurchase(request, purchase_id):
+    user = request.user
+    template_data = {}
+    return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
