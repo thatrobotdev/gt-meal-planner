@@ -26,4 +26,4 @@ class Purchase(models.Model):
     dollars_cost = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     date = models.DateField(null=True, blank=True)
     def __str__(self):
-        return self.meal_plan.user.username + "'s Purchase - " + swipe_cost + " swipes, " + dollars_cost + " dollars on " + self.date
+        return f"{self.meal_plan.user.username}'s Purchase - {self.swipe_cost} swipes, ${self.dollars_cost} on {self.date}"
