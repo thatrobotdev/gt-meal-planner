@@ -206,6 +206,51 @@ def purchasehistory(request):
         return redirect('accounts.editpurchase', purchase_id = purchase_id)
     return render(request, 'accounts/purchasehistory.html', {'template_data': template_data})
 def editpurchase(request, purchase_id):
-    user = request.user
     template_data = {}
+    user = request.user
+    purchase = Purchase.objects.get(id=purchase_id)
+    if not purchase.meal_plan.user == user:
+        template_data['validate'] = False
+    else:
+        template_data['validate'] = True
+    if template_data['validate']:
+        template_data['date'] = purchase.date
+        template_data['oldSwipes'] = purchase.swipe_cost
+        template_data['oldDollars'] = purchase.dollars_cost
+    if request.method == "POST":
+        if request.POST.get("delete") == "true":
+            latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+            latest_meal_plan.current_dollars += purchase.dollars_cost
+            latest_meal_plan.current_swipes += purchase.swipe_cost
+            latest_meal_plan.save()
+            purchase.delete()
+            return redirect('accounts.purchasehistory')
+        else:
+            #adjust meal plan current swipes and dollars
+            #save meal plan and purchase changes
+            newSwipes = int(request.POST.get("swipes"))
+            newDollars = Decimal(request.POST.get("dining_dollars"))
+            newDate = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
+            latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+            if newDate < latest_meal_plan.start_date or newDate > latest_meal_plan.end_date:
+                template_data['invalidDate'] = True
+            if latest_meal_plan.current_swipes + purchase.swipe_cost - newSwipes < 0:
+                template_data['invalidSwipes'] = True
+            if latest_meal_plan.current_dollars + purchase.dollars_cost - newDollars < 0:
+                template_data['invalidDollars'] = True
+            latest_meal_plan.current_swipes += purchase.swipe_cost
+            latest_meal_plan.current_swipes -= newSwipes
+            latest_meal_plan.current_dollars += purchase.dollars_cost
+            latest_meal_plan.current_dollars -= newDollars
+            latest_meal_plan.save()
+            purchase.swipe_cost = newSwipes
+            purchase.dollars_cost = newDollars
+            purchase.date = newDate
+            purchase.save()
+            return redirect('accounts.purchasehistory')
+            
+            
+
+            
+
     return render(request, 'accounts/editpurchase.html', {'template_data': template_data})

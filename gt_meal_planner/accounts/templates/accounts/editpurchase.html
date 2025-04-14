@@ -1,3 +1,70 @@
 {% extends 'base.html' %} {% block content %} {% load static %}
-<p>test</p>
+<div>
+  {% if not template_data.validate %}
+  <p>INVALID PURCHASE EDITOR</p>
+  {% endif %}
+</div>
+<div>
+  {% if template_data.validate %}
+  <h1>Edit Purchase</h1>
+  {% if template_data.invalidDate %}
+  <p>Error: Edited Date Must Be During Active Meal Plan Dates</p>
+  {% endif %} {% if template_data.invalidDollars %}
+  <p>Error: Insufficient Dining Dollar Balance</p>
+  {% endif %} {% if template_data.invalidSwipes %}
+  <p>Error: Insufficient Meal Swipe Balance</p>
+  {% endif %}
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3" id="swipes-container">
+      <label class="form-label"> How many swipes did you use? </label>
+      <input
+        type="number"
+        class="form-control"
+        id="swipes"
+        name="swipes"
+        min="0"
+        placeholder="{{ template_data.oldSwipes }}"
+        required
+      />
+    </div>
+    <div class="mb-3" id="dining-container">
+      <label for="dining_dollars" class="form-label">
+        How many dining dollars did you spend?
+      </label>
+      <div class="input-group">
+        <span class="input-group-text">$</span>
+        <input
+          type="number"
+          class="form-control"
+          id="dining_dollars"
+          name="dining_dollars"
+          min="0"
+          placeholder="{{ template_data.oldDollars }}"
+          required
+        />
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">
+        Purchase Date (Previous Date: {{ template_data.date }})</label
+      >
+      <input
+        type="date"
+        class="form-control"
+        id="plan_start"
+        name="date"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Changes</button>
+  </form>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="delete" value="true" />
+    <button type="submit" class="btn btn-primary">Delete Purchase</button>
+  </form>
+  {% endif%}
+</div>
 {% endblock content %}
