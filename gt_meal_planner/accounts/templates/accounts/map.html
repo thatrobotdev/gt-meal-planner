@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         #map {
-            height: 100vh;
+            height: 75vh;
             width: 100%;
         }
     
@@ -26,11 +26,10 @@
 <body>
     <div id="map"></div>
     <script>
-        const map = L.map('map').setView([33.7756, -84.3963], 13);
+        const map = L.map('map').setView([33.7757, -84.3964], 13); // defaults to georgia tech haha
     
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+            maxZoom: 20,
         }).addTo(map);
     
         const markers = [
@@ -50,16 +49,16 @@
     
                 const userIcon = L.divIcon({
                     className: 'custom-user-marker',
-                    iconSize: [20, 20]
+                    iconSize: [17, 17]
                 });
 
                 L.marker(userCoords, { icon: userIcon }).addTo(map);
 
             }, error => {
-                console.error("Geolocation error:", error);
+                console.error("error with locating user:", error);
             });
         } else {
-            console.warn("Geolocation is not supported by this browser.");
+            console.warn("browser blocked the location finder");
         }
     </script>    
 </body>
