@@ -5,7 +5,9 @@ from .forms import CustomUserCreationForm, CustomErrorList
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from accounts.models import MealPlan
+from accounts.models import Purchase
 from datetime import datetime, date
+from decimal import Decimal
 
 def login_view(request):
     context = {}
@@ -120,19 +122,51 @@ def baseplans(request):
     return render(request, 'accounts/baseplans.html', {'template_data': template_data})
 
 def inputspending(request):
-    #I still need to update this view
-    #I need to make it so users can only add a purchase if they have an active meal plan
-    #Their active meal plan also must have a sufficient remaining swipe or dollars
-    #The time frame of the purchase also must be within the active meal plan
-    #It wont be necessary for users to be able to add purchases on past meal plans
-    #We will just create demo models
     template_data = {}
     user = request.user
-    
+    if user.meal_plans.exists():
+        check_start = date(2025, 1, 3)
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        if latest_meal_plan.end_date < check_start:
+            template_data['active'] = False
+        else:
+            template_data['active'] = True
+    else:
+        template_data['active'] = False
     if request.method == 'POST':
-        meal_swipes = request.POST.get('swipes')
-        dining_dollars = request.POST.get('dining_dollars')
-        date = request.POST.get('date')
-        
+        spending_type = request.POST.get('spending_type')
+        swipes = 0
+        dollars = Decimal('0.00')
+        if spending_type == 'swipes':
+            swipes = int(request.POST.get('swipes'))
+        else:
+            dollars = Decimal(request.POST.get('dining_dollars'))
+        purchase_date_str = request.POST.get('plan_start')
+        purchase_date = datetime.strptime(purchase_date_str, "%Y-%m-%d").date()
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        if purchase_date < latest_meal_plan.start_date or purchase_date > latest_meal_plan.end_date:
+            template_data['badDate'] = True
+            template_data['startDate'] = latest_meal_plan.start_date.strftime("%Y-%m-%d")
+            template_data['endDate'] = latest_meal_plan.end_date.strftime("%Y-%m-%d")
+            return render(request, 'accounts/inputspending.html', {'template_data': template_data})
+        if latest_meal_plan.current_swipes - swipes < 0:
+            template_data['badSwipes'] = True
+            template_data['leftSwipes'] = latest_meal_plan.current_swipes
+            return render(request, 'accounts/inputspending.html', {'template_data': template_data})
+        if latest_meal_plan.current_dollars - dollars < 0:
+            template_data['badDollars'] = True
+            template_data['leftDollars'] = latest_meal_plan.current_dollars
+            return render(request, 'accounts/inputspending.html', {'template_data': template_data})
+        #purchase is valid at this point
+        latest_meal_plan.current_dollars -= dollars
+        latest_meal_plan.current_swipes -= swipes
+        latest_meal_plan.save()
+        Purchase.objects.create(
+            meal_plan=latest_meal_plan,
+            swipe_cost=swipes,
+            dollars_cost=dollars,
+            date=purchase_date
+        )
+
         return redirect('home.index')
     return render(request, 'accounts/inputspending.html', {'template_data': template_data})
