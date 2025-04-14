@@ -174,3 +174,30 @@ def inputspending(request):
 
         return redirect('home.index')
     return render(request, 'accounts/inputspending.html', {'template_data': template_data})
+
+def purchasehistory(request):
+    template_data = {}
+    user = request.user
+    if user.meal_plans.exists():
+        check_start = date(2025, 1, 3)
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        if latest_meal_plan.end_date < check_start:
+            template_data['active'] = False
+        else:
+            template_data['active'] = True
+    else:
+        template_data['active'] = False
+    if template_data['active']:
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        if latest_meal_plan.purchases.exists():
+            template_data['noPurchases'] = False
+        else:
+            template_data['noPurchases'] = True
+    else:
+        template_data['noPurchases'] = True
+    if not template_data['noPurchases']:
+        #add purchases to template data
+        #create front end for them with edit buttons
+        print("test")
+
+    return render(request, 'accounts/purchasehistory.html', {'template_data': template_data})

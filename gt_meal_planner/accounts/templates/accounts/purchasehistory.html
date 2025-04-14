@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div class="p-3">
+  {% if not template_data.active %}
+  <p>You Must Select A Meal Plan Before Making Purchases</p>
+  {% elif template_data.noPurchases %}
+  <p>No Purchases Have Been Made For The Active Plan</p>
+  {% else %}
+  <p>Here are your purchases</p>
+  {% endif %}
+</div>
+{% endblock content %}

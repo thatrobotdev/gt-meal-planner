@@ -8,5 +8,6 @@ urlpatterns = [
     path('reset-password/', views.reset_password, name='accounts.reset_password'),
     path('baseplans/', views.baseplans, name='accounts.baseplans'),
     path('map/', views.map, name='accounts.map'),
-    path('inputspending/', views.inputspending, name='accounts.inputspending')
+    path('inputspending/', views.inputspending, name='accounts.inputspending'),
+    path('purchasehistory/', views.purchasehistory, name='accounts.purchasehistory')
 ]
