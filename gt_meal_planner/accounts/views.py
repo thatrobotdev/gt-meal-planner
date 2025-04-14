@@ -119,6 +119,10 @@ def baseplans(request):
         return redirect('home.index')
     return render(request, 'accounts/baseplans.html', {'template_data': template_data})
 
+def map(request):
+    template_data = {}
+    return render(request, 'accounts/map.html', {'template_data': template_data})
+
 def inputspending(request):
     #I still need to update this view
     #I need to make it so users can only add a purchase if they have an active meal plan

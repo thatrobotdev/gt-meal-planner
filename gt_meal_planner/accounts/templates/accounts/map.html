@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    
+        .custom-user-marker {
+            background-color: #007bff;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            box-shadow: 0 0 6px rgba(0, 123, 255, 0.8);
+        }
+    </style>    
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        const map = L.map('map').setView([33.7756, -84.3963], 13);
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    
+        const markers = [
+            { coords: [33.77929, -84.40489], name: "West Village Dining Hall" },
+            { coords: [33.771037, -84.391672], name: "NAV Dining Hall" }
+        ];
+    
+        markers.forEach(marker => {
+            L.marker(marker.coords).addTo(map).bindPopup(marker.name);
+        });
+    
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const userCoords = [position.coords.latitude, position.coords.longitude];
+    
+                map.setView(userCoords, 14);
+    
+                const userIcon = L.divIcon({
+                    className: 'custom-user-marker',
+                    iconSize: [20, 20]
+                });
+
+                L.marker(userCoords, { icon: userIcon }).addTo(map);
+
+            }, error => {
+                console.error("Geolocation error:", error);
+            });
+        } else {
+            console.warn("Geolocation is not supported by this browser.");
+        }
+    </script>    
+</body>
+</html>
+{% endblock content %}
