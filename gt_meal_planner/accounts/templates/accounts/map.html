@@ -13,7 +13,7 @@
             width: 100%;
         }
     
-        .custom-user-marker {
+        .user-marker {
             background-color: #007bff;
             border: 2px solid white;
             border-radius: 50%;
@@ -26,11 +26,9 @@
 <body>
     <div id="map"></div>
     <script>
-        const map = L.map('map').setView([33.7757, -84.3964], 13); // defaults to georgia tech haha
+        const map = L.map('map').setView([33.7757, -84.3964], 13); // defaults to georgia tech
     
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-        }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     
         const markers = [
             { coords: [33.77929, -84.40489], name: "West Village Dining Hall" },
@@ -48,17 +46,12 @@
                 map.setView(userCoords, 14);
     
                 const userIcon = L.divIcon({
-                    className: 'custom-user-marker',
-                    iconSize: [17, 17]
+                    className: 'user-marker',
                 });
 
                 L.marker(userCoords, { icon: userIcon }).addTo(map);
 
-            }, error => {
-                console.error("error with locating user:", error);
             });
-        } else {
-            console.warn("browser blocked the location finder");
         }
     </script>    
 </body>
