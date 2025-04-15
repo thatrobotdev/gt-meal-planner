@@ -234,10 +234,13 @@ def editpurchase(request, purchase_id):
             latest_meal_plan = user.meal_plans.order_by('-start_date').first()
             if newDate < latest_meal_plan.start_date or newDate > latest_meal_plan.end_date:
                 template_data['invalidDate'] = True
+                return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
             if latest_meal_plan.current_swipes + purchase.swipe_cost - newSwipes < 0:
                 template_data['invalidSwipes'] = True
+                return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
             if latest_meal_plan.current_dollars + purchase.dollars_cost - newDollars < 0:
                 template_data['invalidDollars'] = True
+                return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
             latest_meal_plan.current_swipes += purchase.swipe_cost
             latest_meal_plan.current_swipes -= newSwipes
             latest_meal_plan.current_dollars += purchase.dollars_cost
@@ -248,9 +251,4 @@ def editpurchase(request, purchase_id):
             purchase.date = newDate
             purchase.save()
             return redirect('accounts.purchasehistory')
-            
-            
-
-            
-
     return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
