@@ -19,6 +19,8 @@
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link
       rel="stylesheet"
       type="text/css"
@@ -38,6 +40,21 @@
       }
       .navbar-toggler-icon {
         filter: invert(1);
+      }
+
+      .circle-hover {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: gray;
+        position: relative;
+      }
+
+      .circle-hover:hover {
+        box-shadow: 0 0 0 5px transparent;
+        background-color: rgba(0, 0, 0, 0.05);
       }
 
       .main-content {
@@ -91,28 +108,37 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto navbar-ml">
-            <a class="nav-link" href="{% url 'home.about' %}">About</a>
-            <div class="vr bg-white mx-2 d-none d-lg-block"></div>
+
             {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'accounts.logout' %}"
-              >Logout ({{ user.username }})</a
-            >
+            
+            <!--
             <a class="nav-link" href="{% url 'accounts.baseplans' %}"
               >Base Plans</a
             >
+          -->
 
-            <a class="nav-link" href="{% url 'accounts.map' %}">Map</a>
+            <a class="nav-link circle-hover" style="margin-right: 20px;" href="{% url 'accounts.map' %}">MAP<i style="margin-left: 8px;" class="fa-solid fa-map"></i></a>
 
-            <a class="nav-link" href="{% url 'accounts.inputspending' %}"
-              >Input Spending</a
+            <a class="nav-link circle-hover" style="margin-right: 20px;" href="{% url 'accounts.inputspending' %}"
+              >Add<i style="margin-left: 8px;" class="fas fa-plus"></i></a
             >
-            <a class="nav-link" href="{% url 'accounts.purchasehistory' %}"
-              >Purchase History</a
+            <a class="nav-link circle-hover" href="{% url 'accounts.purchasehistory' %}"
+              >HISTORY<i style="margin-left: 8px;" class="fa fa-history"></i></a
+            >
+            <div class="vr bg-white mx-2 d-none d-lg-block"></div>
+
+
+            <a class="nav-link" href="{% url 'home.about' %}">About</a>
+
+            <a class="nav-link" href="{% url 'accounts.logout' %}"
+              >Logout ({{ user.username }})</a
             >
             <a class="nav-link" href="{% url 'accounts.pastmealplans' %}"
               >Past Meal Plans</a
             >
             {% else %}
+            <a class="nav-link" href="{% url 'home.about' %}">About</a>
+            <div class="vr bg-white mx-2 d-none d-lg-block"></div>
             <a class="nav-link" href="{% url 'accounts.login' %}">Login</a>
             <a class="nav-link" href="{% url 'accounts.signup' %}">Sign Up</a>
             {% endif %}
