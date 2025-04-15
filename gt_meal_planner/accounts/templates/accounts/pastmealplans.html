@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div>
+  {% if not template_data.hasPast %}
+  <p>No Past Plans</p>
+  {% endif %}
+</div>
+<div>
+  {% if template_data.hasPast %}
+  <p>Display Past Plans Here:</p>
+  {% endif %}
+</div>
+{% endblock content %}

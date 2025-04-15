@@ -10,5 +10,6 @@ urlpatterns = [
     path('map/', views.map, name='accounts.map'),
     path('inputspending/', views.inputspending, name='accounts.inputspending'),
     path('purchasehistory/', views.purchasehistory, name='accounts.purchasehistory'),
-    path('purchasehistory/<int:purchase_id>', views.editpurchase, name='accounts.editpurchase')
+    path('purchasehistory/<int:purchase_id>', views.editpurchase, name='accounts.editpurchase'),
+    path('pastmealplans/', views.pastmealplans, name='accounts.pastmealplans')
 ]

@@ -252,3 +252,22 @@ def editpurchase(request, purchase_id):
             purchase.save()
             return redirect('accounts.purchasehistory')
     return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
+def pastmealplans(request):
+    template_data = {}
+    user = request.user
+    if user.meal_plans.exists():
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        check_start = date(2025, 1, 3)
+        if latest_meal_plan.end_date < check_start:
+            template_data['hasPast'] = True
+            template_data['pastPlans'] = user.meal_plans.all()
+            return render(request, 'accounts/pastmealplans.html', {'template_data': template_data})
+        past_meal_plans = user.meal_plans.all().exclude(id=latest_meal_plan.id)
+        if len(past_meal_plans) == 0:
+            template_data['hasPast'] = False
+        else:
+            template_data['hasPast'] = True
+            template_data['pastPlans'] = past_meal_plans
+    else:
+        template_data['hasPast'] = False
+    return render(request, 'accounts/pastmealplans.html', {'template_data': template_data})
