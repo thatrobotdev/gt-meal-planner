@@ -1,5 +1,24 @@
 {% extends 'base.html' %} {% block content %}
 
+{% if user.is_authenticated and template_data.active %}
+  {% if template_data.dining_dollars_rate == 1 %}
+    <div class="alert alert-danger text-center">You are spending dining dollars way too quick!</div>
+  {% elif template_data.dining_dollars_rate == -1 %}
+    <div class="alert alert-warning text-center">You are spending dining dollars a little slow, treat yourself!</div>
+  {% else %}
+    <div class="alert alert-success text-center">You are spending dining dollars at a good rate!</div>
+  {% endif %}
+
+
+  {% if template_data.swipes_rate == 1 %}
+    <div class="alert alert-danger text-center">You are using your swipes way too quick!</div>
+  {% elif template_data.swipes_rate == -1 %}
+    <div class="alert alert-warning text-center">You are using your swipes a little slow, hit up the dining hall!</div>
+  {% else %}
+    <div class="alert alert-success text-center">You are using your swipes well!</div>
+  {% endif %}
+{% endif %}
+
 <header class="masthead bg-index text-center py-4">
   <div class="container d-flex align-items-center flex-column pt-2">
     <h2>GT Meal Planner</h2>
@@ -34,4 +53,5 @@
     alt="Bar Chart"
   />
 </div>
+
 {% endif %} {% endblock content %}

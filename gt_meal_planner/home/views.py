@@ -10,6 +10,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
+from django.db import models
+from django.utils import timezone
 
 def index(request):
     user = request.user
@@ -29,6 +31,30 @@ def index(request):
                 template_data['dollars'] = latest_meal_plan.current_dollars
                 template_data['start'] = latest_meal_plan.start_date
                 template_data['end'] = latest_meal_plan.end_date
+
+            total_days = (latest_meal_plan.end_date - latest_meal_plan.start_date).days
+            day_count = (date.today() - latest_meal_plan.start_date).days
+
+            ideal_dining_dollars = latest_meal_plan.dining_dollars / total_days
+            ideal_swipes = latest_meal_plan.meal_swipes / total_days
+            avg_dining_dollars = (latest_meal_plan.dining_dollars - latest_meal_plan.current_dollars) / day_count
+            avg_swipes = (latest_meal_plan.meal_swipes - latest_meal_plan.current_swipes) / day_count
+
+            template_data['ideal'] = ideal_dining_dollars
+            template_data['avg'] = avg_dining_dollars
+
+            template_data['dining_dollars_rate'] = 0
+            if avg_dining_dollars > ideal_dining_dollars + 1:
+                template_data['dining_dollars_rate'] = 1
+            elif avg_dining_dollars < ideal_dining_dollars - 1:
+                template_data['dining_dollars_rate'] = -1
+            
+            template_data['swipes_rate'] = 0
+            if avg_swipes > ideal_swipes + 0.5:
+                template_data['swipes_rate'] = 1
+            elif avg_swipes < ideal_swipes - 0.5:
+                template_data['swipes_rate'] = -1
+
         else:
             template_data['active'] = False
     else:
