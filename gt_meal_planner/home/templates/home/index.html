@@ -25,7 +25,13 @@
     Your meal plan started on {{template_data.start}} and ends on
     {{template_data.end}}.
   </p>
-
-  
+  <img
+    src="data:image/png;base64,{{ template_data.weeklySwipeChart }}"
+    alt="Bar Chart"
+  />
+  <img
+    src="data:image/png;base64,{{ template_data.weeklyDollarChart }}"
+    alt="Bar Chart"
+  />
 </div>
 {% endif %} {% endblock content %}

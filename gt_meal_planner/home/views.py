@@ -1,8 +1,15 @@
 import random
 from django.shortcuts import render
-from accounts.models import MealPlan
+from accounts.models import MealPlan, Purchase
 from django.contrib.auth.models import User
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
+from decimal import Decimal
+import matplotlib
+import matplotlib.dates as mdates
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 def index(request):
     user = request.user
@@ -24,6 +31,64 @@ def index(request):
                 template_data['end'] = latest_meal_plan.end_date
         else:
             template_data['active'] = False
+    else:
+        template_data['active'] = False
+    if template_data['active']:
+        latest_meal_plan = user.meal_plans.order_by('-start_date').first()
+        purchases = latest_meal_plan.purchases.all()
+        current_date = date.today()
+        swipes_left = latest_meal_plan.current_swipes
+        dollars_left = latest_meal_plan.current_dollars
+        days_left = (latest_meal_plan.end_date - current_date).days
+        recommended_swipes = swipes_left // days_left
+        recommended_dollars = dollars_left / days_left
+        dates = []
+        spentSwipes = []
+        spentDollars = []
+        for i in range (6, -1, -1):
+            curr = current_date - timedelta(days=i)
+            curr_purchases = purchases.filter(date=curr)
+            currSwipes = 0
+            currDollars = Decimal(0)
+            for p in curr_purchases:
+                currSwipes += p.swipe_cost
+                currDollars += p.dollars_cost
+            dates.append(curr)
+            spentSwipes.append(currSwipes)
+            spentDollars.append(currDollars)
+        #create plots for weekly dining dollar spending and meal swipe spending
+        figWS, axWS = plt.subplots()
+        figWD, axWD = plt.subplots()
+        #add graph titles
+        axWS.set_title('Weekly Meal Swipe Spending')
+        axWD.set_title('Weekly Dining Dollar Spending')
+        #add data to bar graphs (still need to generate the data)
+        axWS.bar(dates, spentSwipes)
+        axWD.bar(dates, spentDollars)
+        #format the dates on graph to only display month and day
+        axWS.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+        axWD.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+        #add recommended spending to graph
+        axWS.axhline(y=recommended_swipes, color='red', linestyle='--', linewidth=2, label='TargetSwipes')
+        axWD.axhline(y=recommended_dollars, color='red', linestyle='--', linewidth=2, label='TargetDollars')
+        figWS.text(0.5, 0.01, 'Recommended Weekly Budget: ' + str(recommended_swipes * 7) + ' Swipes', ha='center', fontsize=10, color='gray')
+        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(recommended_dollars * 7), ha='center', fontsize=10, color='gray')
+        #store images of graphs
+        bufWS = BytesIO()
+        bufWD = BytesIO()
+        figWS.savefig(bufWS, format='png')
+        figWD.savefig(bufWD, format='png')
+        bufWS.seek(0)
+        bufWD.seek(0)
+        encoded_WS = base64.b64encode(bufWS.read()).decode('utf-8')
+        encoded_WD = base64.b64encode(bufWD.read()).decode('utf-8')
+        bufWS.close()
+        bufWD.close()
+        template_data['weeklySwipeChart'] = encoded_WS
+        template_data['weeklyDollarChart'] = encoded_WD
+
+
+
     return render(request, 'home/index.html', {'template_data': template_data})
 
 def about(request):
