@@ -148,7 +148,8 @@ def inputspending(request):
         purchase_date_str = request.POST.get('plan_start')
         purchase_date = datetime.strptime(purchase_date_str, "%Y-%m-%d").date()
         latest_meal_plan = user.meal_plans.order_by('-start_date').first()
-        if purchase_date < latest_meal_plan.start_date or purchase_date > latest_meal_plan.end_date:
+        current_date = date.today()
+        if purchase_date < latest_meal_plan.start_date or purchase_date > current_date or purchase_date > latest_meal_plan.end_date:
             template_data['badDate'] = True
             template_data['startDate'] = latest_meal_plan.start_date.strftime("%Y-%m-%d")
             template_data['endDate'] = latest_meal_plan.end_date.strftime("%Y-%m-%d")
@@ -232,7 +233,8 @@ def editpurchase(request, purchase_id):
             newDollars = Decimal(request.POST.get("dining_dollars"))
             newDate = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
             latest_meal_plan = user.meal_plans.order_by('-start_date').first()
-            if newDate < latest_meal_plan.start_date or newDate > latest_meal_plan.end_date:
+            current_date = date.today()
+            if newDate < latest_meal_plan.start_date or newDate > latest_meal_plan.end_date or newDate > current_date:
                 template_data['invalidDate'] = True
                 return render(request, 'accounts/editpurchase.html', {'template_data': template_data})
             if latest_meal_plan.current_swipes + purchase.swipe_cost - newSwipes < 0:

@@ -8,7 +8,7 @@
   {% if template_data.validate %}
   <h1>Edit Purchase</h1>
   {% if template_data.invalidDate %}
-  <p>Error: Edited Date Must Be During Active Meal Plan Dates</p>
+  <p>Error: Edited Date Cannot Be Before Meal Plan Started Or After Today</p>
   {% endif %} {% if template_data.invalidDollars %}
   <p>Error: Insufficient Dining Dollar Balance</p>
   {% endif %} {% if template_data.invalidSwipes %}

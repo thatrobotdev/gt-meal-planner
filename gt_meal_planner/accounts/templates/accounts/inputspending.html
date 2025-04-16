@@ -7,8 +7,8 @@
         <hr />
         {% if template_data.active %} {% if template_data.badDate %}
         <p>
-          Error: You Must Input Spending Within The Active Plan Range
-          {{template_data.startDate}} : {{template_data.endDate}}
+          Error: You Cannot Input Purchases Before Your Plan Started
+          ({{template_data.startDate}}) Or After The Current Date
         </p>
         {% endif %} {% if template_data.badSwipes %}
         <p>
