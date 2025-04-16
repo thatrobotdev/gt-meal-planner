@@ -6,7 +6,19 @@
 </div>
 <div>
   {% if template_data.hasPast %}
-  <p>Display Past Plans Here:</p>
+  <h1>Past Meal Plans</h1>
+  <div class="p-3">
+    {% for plan in template_data.pastPlans %}
+    <div class="card h-100">
+      <p>Start Date: {{plan.start_date}}</p>
+      <p>End Date: {{plan.end_date}}</p>
+      <p>Starting Meal Swipes: {{plan.meal_swipes}}</p>
+      <p>Starting Dining Dollars: ${{plan.dining_dollars}}</p>
+      <p>Remaining Meal Swipes: {{plan.current_swipes}}</p>
+      <p>Remaining Dining Dollars: ${{plan.current_dollars}}</p>
+    </div>
+    {% endfor %}
+  </div>
   {% endif %}
 </div>
 {% endblock content %}

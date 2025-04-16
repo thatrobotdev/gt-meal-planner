@@ -98,7 +98,7 @@ def index(request):
         axWS.axhline(y=recommended_swipes, color='red', linestyle='--', linewidth=2, label='TargetSwipes')
         axWD.axhline(y=recommended_dollars, color='red', linestyle='--', linewidth=2, label='TargetDollars')
         figWS.text(0.5, 0.01, 'Recommended Weekly Budget: ' + str(recommended_swipes * 7) + ' Swipes', ha='center', fontsize=10, color='gray')
-        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(recommended_dollars * 7), ha='center', fontsize=10, color='gray')
+        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(round(float(recommended_dollars * 7), 2)), ha='center', fontsize=10, color='gray')
         #store images of graphs
         bufWS = BytesIO()
         bufWD = BytesIO()

@@ -227,8 +227,6 @@ def editpurchase(request, purchase_id):
             purchase.delete()
             return redirect('accounts.purchasehistory')
         else:
-            #adjust meal plan current swipes and dollars
-            #save meal plan and purchase changes
             newSwipes = int(request.POST.get("swipes"))
             newDollars = Decimal(request.POST.get("dining_dollars"))
             newDate = datetime.strptime(request.POST.get("date"), "%Y-%m-%d").date()
