@@ -1,9 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -24,15 +20,24 @@
     </style>    
 </head>
 <body>
+    <div>
+        <a>The current weather conditions: {{template_data.weather}} F</a>
+    </div>
+    <a hidden id="init_lat">{{template_data.lat}}</a>
+    <a hidden id="init_long">{{template_data.long}}</a>
+    <a hidden id="willage_lat">{{template_data.willage_lat}}</a>
+    <a hidden id="willage_long">{{template_data.willage_long}}</a>
+    <a hidden id="nav_lat">{{template_data.nav_lat}}</a>
+    <a hidden id="nav_long">{{template_data.nav_long}}</a>
     <div id="map"></div>
     <script>
-        const map = L.map('map').setView([33.7757, -84.3964], 13); // defaults to georgia tech
+        const map = L.map('map').setView([parseFloat(document.getElementById('init_lat').innerText), parseFloat(document.getElementById('init_long').innerText)], 13); // defaults to georgia tech
     
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     
         const markers = [
-            { coords: [33.77929, -84.40489], name: "West Village Dining Hall" },
-            { coords: [33.771037, -84.391672], name: "NAV Dining Hall" }
+            { coords: [parseFloat(document.getElementById('willage_lat').innerText), parseFloat(document.getElementById('willage_long').innerText)], name: "West Village Dining Hall" },
+            { coords: [parseFloat(document.getElementById('nav_lat').innerText), parseFloat(document.getElementById('nav_long').innerText)], name: "NAV Dining Hall" }
         ];
     
         markers.forEach(marker => {

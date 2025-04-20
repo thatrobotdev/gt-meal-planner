@@ -8,6 +8,9 @@ from accounts.models import MealPlan
 from accounts.models import Purchase
 from datetime import datetime, date
 from decimal import Decimal
+import os
+from dotenv import load_dotenv
+import requests
 
 def login_view(request):
     context = {}
@@ -123,6 +126,23 @@ def baseplans(request):
 
 def map(request):
     template_data = {}
+    load_dotenv()
+    temp_key = os.getenv("WEATHER_KEY")
+    temperature = requests.get('https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=33.7757&lon=-84.3964&appid=' + temp_key).json()["main"]["temp"]
+    template_data['weather'] = temperature
+
+    loc_key = os.getenv("LOC_KEY")
+    gt_loc = requests.get('https://geocode.maps.co/search?q=Georgia+Institute+of+Technology,+Atlanta,+GA+30332&api_key=' + loc_key).json()[0]
+    template_data['lat'] = float(gt_loc["lat"])                                 #accurate: 33.7757
+    template_data['long'] = float(gt_loc["lon"])                                #accurate: -84.3964
+
+    willage_loc = requests.get('https://geocode.maps.co/search?q=532+8th+St+NW,+Atlanta,+GA+30332&api_key=' + loc_key).json()[0]
+    template_data['willage_lat'] = float(willage_loc["lat"])                         #accurate: 33.77929
+    template_data['willage_long'] = float(willage_loc["lon"])                        #accurate: -84.40489
+
+    nav_loc = requests.get('https://geocode.maps.co/search?q=120+North+Avenue+NW,+Atlanta,+GA+30332&api_key=' + loc_key).json()[0]
+    template_data['nav_lat'] = float(nav_loc["lat"])                             #accurate: 33.771037
+    template_data['nav_long'] = float(nav_loc["lon"])                        #accurate: -84.391672  
     return render(request, 'accounts/map.html', {'template_data': template_data})
 
 def inputspending(request):
