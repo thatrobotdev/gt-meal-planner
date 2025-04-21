@@ -1,27 +1,39 @@
 {% extends 'base.html' %} {% block content %}
-
-{% if user.is_authenticated and template_data.active %}
-  {% if template_data.dining_dollars_rate == 1 %}
-    <div class="alert alert-danger text-center">You are spending dining dollars way too quick!</div>
-  {% elif template_data.dining_dollars_rate == -1 %}
-    <div class="alert alert-warning text-center">You are spending dining dollars a little slow, treat yourself!</div>
-  {% else %}
-    <div class="alert alert-success text-center">You are spending dining dollars at a good rate!</div>
+<div>
+  {% if user.is_authenticated and template_data.active %}
+  <div>
+    {% if template_data.dining_dollars_rate == 1 %}
+    <div class="alert alert-danger text-center">
+      You are spending dining dollars way too quick!
+    </div>
+    {% elif template_data.dining_dollars_rate == -1 %}
+    <div class="alert alert-warning text-center">
+      You are spending dining dollars a little slow, treat yourself!
+    </div>
+    {% else %}
+    <div class="alert alert-success text-center">
+      You are spending dining dollars at a good rate!
+    </div>
+    {% endif %} {% if template_data.swipes_rate == 1 %}
+    <div class="alert alert-danger text-center">
+      You are using your swipes way too quick!
+    </div>
+    {% elif template_data.swipes_rate == -1 %}
+    <div class="alert alert-warning text-center">
+      You are using your swipes a little slow, hit up the dining hall!
+    </div>
+    {% else %}
+    <div class="alert alert-success text-center">
+      You are using your swipes well!
+    </div>
+    {% endif %}
+  </div>
   {% endif %}
-
-
-  {% if template_data.swipes_rate == 1 %}
-    <div class="alert alert-danger text-center">You are using your swipes way too quick!</div>
-  {% elif template_data.swipes_rate == -1 %}
-    <div class="alert alert-warning text-center">You are using your swipes a little slow, hit up the dining hall!</div>
-  {% else %}
-    <div class="alert alert-success text-center">You are using your swipes well!</div>
-  {% endif %}
-{% endif %}
+</div>
 
 <header class="masthead bg-index text-center py-4">
   <div class="container d-flex align-items-center flex-column pt-2">
-    <h2 style="color: #003057;">GT Meal Planner</h2>
+    <h2 style="color: #003057">GT Meal Planner</h2>
     <p>Track your spending with ease!</p>
   </div>
 </header>
@@ -33,13 +45,17 @@
 <!-- add meal plan info, swipes, etc-->
 <div class="container d-flex align-items-center flex-column pt-2">
   <p>Hello, {{template_data.username}}!</p>
-  <p>Please Select A Base Meal Plan</p>
+  <a href="{% url 'accounts.baseplans' %}">Please Select A Base Meal Plan</a>
 </div>
 {% elif user.is_authenticated and template_data.active %}
 <div class="container d-flex align-items-center flex-column pt-2">
-<p style="color: #003057;">Hello, {{template_data.username}}!</p>
-<p style="color: #b3a369;">You have {{template_data.swipes}} swipes remaining.</p>
-<p style="color: #b3a369;">You have {{template_data.dollars}} dining dollars remaining.</p>
+  <p style="color: #003057">Hello, {{template_data.username}}!</p>
+  <p style="color: #b3a369">
+    You have {{template_data.swipes}} swipes remaining.
+  </p>
+  <p style="color: #b3a369">
+    You have {{template_data.dollars}} dining dollars remaining.
+  </p>
   <p>
     Your meal plan started on {{template_data.start}} and ends on
     {{template_data.end}}.
