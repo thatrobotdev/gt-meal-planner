@@ -21,7 +21,7 @@
 
 <header class="masthead bg-index text-center py-4">
   <div class="container d-flex align-items-center flex-column pt-2">
-    <h2>GT Meal Planner</h2>
+    <h2 style="color: #003057;">GT Meal Planner</h2>
     <p>Track your spending with ease!</p>
   </div>
 </header>
@@ -37,9 +37,9 @@
 </div>
 {% elif user.is_authenticated and template_data.active %}
 <div class="container d-flex align-items-center flex-column pt-2">
-  <p>Hello, {{template_data.username}}!</p>
-  <p>You have {{template_data.swipes}} swipes remaining.</p>
-  <p>You have {{template_data.dollars}} dining dollars remaining.</p>
+<p style="color: #003057;">Hello, {{template_data.username}}!</p>
+<p style="color: #b3a369;">You have {{template_data.swipes}} swipes remaining.</p>
+<p style="color: #b3a369;">You have {{template_data.dollars}} dining dollars remaining.</p>
   <p>
     Your meal plan started on {{template_data.start}} and ends on
     {{template_data.end}}.

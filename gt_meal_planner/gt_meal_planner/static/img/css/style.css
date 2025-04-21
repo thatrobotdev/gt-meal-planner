@@ -1,0 +1,43 @@
+body {
+    color: #222;
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  h1, h2, h3 {
+    color: #003057; /* GT navy */
+  }
+  
+  a {
+    color: #f1c40f;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #ffd700;
+  }
+  
+  .ms-footer {
+    background-color: #003057 !important;
+    color: white;
+  }
+  
+  .ms-footer a {
+    color: #f1c40f;
+  }
+  
+  .ms-footer-bottom a {
+    color: #f1c40f;
+  }
+  
+  .ms-footer-bottom a:hover {
+    color: #ffd700 !important;
+  }
+  
+  .about-page h2, .about-page h3 {
+    color: #003057;
+  }
+  
+  .about-page a {
+    color: #f1c40f;
+  }
