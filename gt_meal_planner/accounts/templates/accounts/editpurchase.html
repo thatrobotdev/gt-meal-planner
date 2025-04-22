@@ -1,23 +1,34 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
 <div>
   {% if not template_data.validate %}
-  <p>INVALID PURCHASE EDITOR</p>
+  <p class="text-danger fw-bold">INVALID PURCHASE EDITOR</p>
   {% endif %}
 </div>
+
 <div>
   {% if template_data.validate %}
   <h1>Edit Purchase</h1>
+
   {% if template_data.invalidDate %}
-  <p>Error: Edited Date Cannot Be Before Meal Plan Started Or After Today</p>
-  {% endif %} {% if template_data.invalidDollars %}
-  <p>Error: Insufficient Dining Dollar Balance</p>
-  {% endif %} {% if template_data.invalidSwipes %}
-  <p>Error: Insufficient Meal Swipe Balance</p>
+  <p class="text-danger">Error: Edited Date Cannot Be Before Meal Plan Started Or After Today</p>
   {% endif %}
-  <form method="POST">
+
+  {% if template_data.invalidDollars %}
+  <p class="text-danger">Error: Insufficient Dining Dollar Balance</p>
+  {% endif %}
+
+  {% if template_data.invalidSwipes %}
+  <p class="text-danger">Error: Insufficient Meal Swipe Balance</p>
+  {% endif %}
+
+  
+  <form method="POST" class="mb-4">
     {% csrf_token %}
     <div class="mb-3" id="swipes-container">
-      <label class="form-label"> How many swipes did you use? </label>
+      <label class="form-label">How many swipes did you use?</label>
       <input
         type="number"
         class="form-control"
@@ -28,10 +39,9 @@
         required
       />
     </div>
+
     <div class="mb-3" id="dining-container">
-      <label for="dining_dollars" class="form-label">
-        How many dining dollars did you spend?
-      </label>
+      <label for="dining_dollars" class="form-label">How many dining dollars did you spend?</label>
       <div class="input-group">
         <span class="input-group-text">$</span>
         <input
@@ -45,10 +55,9 @@
         />
       </div>
     </div>
+
     <div class="mb-3">
-      <label class="form-label">
-        Purchase Date (Previous Date: {{ template_data.date }})</label
-      >
+      <label class="form-label">Purchase Date (Previous Date: {{ template_data.date }})</label>
       <input
         type="date"
         class="form-control"
@@ -58,13 +67,21 @@
       />
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit Changes</button>
+    
+    <div class="d-flex gap-3 mt-4">
+      
+      <button type="submit" class="btn btn-success">Submit Changes</button>
   </form>
-  <form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="delete" value="true" />
-    <button type="submit" class="btn btn-primary">Delete Purchase</button>
-  </form>
-  {% endif%}
+
+      
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="delete" value="true" />
+        <button type="submit" class="btn btn-danger">Delete Purchase</button>
+      </form>
+    </div>
+
+  {% endif %}
 </div>
+
 {% endblock content %}
