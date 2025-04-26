@@ -71,6 +71,8 @@ def index(request):
         dates = []
         spentSwipes = []
         spentDollars = []
+        weekSwipes = 0
+        weekDollars = 0
         for i in range (6, -1, -1):
             curr = current_date - timedelta(days=i)
             curr_purchases = purchases.filter(date=curr)
@@ -79,10 +81,15 @@ def index(request):
             for p in curr_purchases:
                 currSwipes += p.swipe_cost
                 currDollars += p.dollars_cost
+                weekSwipes += p.swipe_cost
+                weekDollars += p.dollar_cost
             dates.append(curr)
             spentSwipes.append(currSwipes)
             spentDollars.append(currDollars)
         #create plots for weekly dining dollar spending and meal swipe spending
+        #remaining swipes/dollars + swipes/dollars on graph is the max you can recommend
+        minRecSwipes = latest_meal_plan.current_swipes + weekSwipes
+        minRecDollars = float(latest_meal_plan.current_dollars + weekDollars)
         figWS, axWS = plt.subplots()
         figWD, axWD = plt.subplots()
         #add graph titles
@@ -97,8 +104,8 @@ def index(request):
         #add recommended spending to graph
         axWS.axhline(y=recommended_swipes, color='red', linestyle='--', linewidth=2, label='TargetSwipes')
         axWD.axhline(y=recommended_dollars, color='red', linestyle='--', linewidth=2, label='TargetDollars')
-        figWS.text(0.5, 0.01, 'Recommended Weekly Budget: ' + str(recommended_swipes * 7) + ' Swipes', ha='center', fontsize=10, color='gray')
-        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(round(float(recommended_dollars * 7), 2)), ha='center', fontsize=10, color='gray')
+        figWS.text(0.5, 0.01, 'Recommended Weekly Budget: ' + str(min(minRecSwipes, recommended_swipes * 7)) + ' Swipes', ha='center', fontsize=10, color='gray')
+        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(round(min(float(recommended_dollars * 7), minRecDollars), 2)), ha='center', fontsize=10, color='gray')
         #store images of graphs
         bufWS = BytesIO()
         bufWD = BytesIO()

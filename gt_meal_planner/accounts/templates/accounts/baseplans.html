@@ -31,7 +31,6 @@
                 <li class="list-group-item">
                   Meal Swipes: <span>Unlimited</span>
                 </li>
-                <li class="list-group-item">Guest Meals: <span>5</span></li>
               </ul>
               <div class="mt-3 text-center">
                 <button
@@ -62,7 +61,6 @@
                   Dining Dollars: <span>$812.00</span>
                 </li>
                 <li class="list-group-item">Meal Swipes: <span>200</span></li>
-                <li class="list-group-item">Guest Meals: <span>0</span></li>
               </ul>
               <div class="mt-3 text-center">
                 <button
@@ -93,7 +91,6 @@
                   Dining Dollars: <span>$100</span>
                 </li>
                 <li class="list-group-item">Meal Swipes: <span>100</span></li>
-                <li class="list-group-item">Guest Meals: <span>0</span></li>
               </ul>
               <div class="mt-3 text-center">
                 <button
@@ -163,10 +160,6 @@
                 <li class="list-group-item">
                   Meal Swipes:
                   <span class="dining-dollar-meal-swipes">[Meal Swipes]</span>
-                </li>
-                <li class="list-group-item">
-                  Guest Meals:
-                  <span class="dining-dollar-guest-meals">[Guest Meals]</span>
                 </li>
               </ul>
               <div class="mt-3 text-center">
@@ -241,10 +234,6 @@
                   Meal Swipes:
                   <span class="meal-plan-meal-swipes">[Meal Swipes]</span>
                 </li>
-                <li class="list-group-item">
-                  Guest Meals:
-                  <span class="meal-plan-guest-meals">[Guest Meals]</span>
-                </li>
               </ul>
               <div class="mt-3 text-center">
                 <button
@@ -285,31 +274,26 @@
         price: "$50",
         diningDollars: "$50",
         mealSwipes: "0",
-        guestMeals: "0",
       },
       100: {
         price: "$100",
         diningDollars: "$100",
         mealSwipes: "0",
-        guestMeals: "0",
       },
       200: {
         price: "$200",
         diningDollars: "$200",
         mealSwipes: "0",
-        guestMeals: "0",
       },
       400: {
         price: "$400",
         diningDollars: "$440",
         mealSwipes: "0",
-        guestMeals: "0",
       },
       600: {
         price: "$600",
         diningDollars: "$660",
         mealSwipes: "0",
-        guestMeals: "0",
       },
     };
 
@@ -318,25 +302,21 @@
         price: "$581.00",
         diningDollarPlans: "$0",
         mealSwipes: "50",
-        guestMeals: "[Guest Meals for 50]",
       },
       100: {
         price: "$1314.00",
         diningDollarPlans: "$100",
         mealSwipes: "100",
-        guestMeals: "[Guest Meals for 100]",
       },
       150: {
         price: "$1867.00",
         diningDollarPlans: "$150",
         mealSwipes: "150",
-        guestMeals: "[Guest Meals for 150]",
       },
       200: {
         price: "$2415.00",
         diningDollarPlans: "$200",
         mealSwipes: "200",
-        guestMeals: "[Guest Meals for 200]",
       },
     };
 
@@ -349,8 +329,6 @@
           data.diningDollars;
         card.querySelector(".dining-dollar-meal-swipes").innerText =
           data.mealSwipes;
-        card.querySelector(".dining-dollar-guest-meals").innerText =
-          data.guestMeals;
       }
     }
 
@@ -363,8 +341,6 @@
           data.diningDollarPlans;
         card.querySelector(".meal-plan-meal-swipes").innerText =
           data.mealSwipes;
-        card.querySelector(".meal-plan-guest-meals").innerText =
-          data.guestMeals;
       }
     }
 
