@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div>
+  {% if not template_data.validate %}
+  <p class="text-danger fw-bold">INVALID PURCHASE EDITOR</p>
+  {% endif %}
+</div>
+
+<div>
+  {% if template_data.validate %}
+  <h1>Edit Purchase</h1>
+
+  {% if template_data.invalidDate %}
+  <p class="text-danger">Error: Edited Date Cannot Be Before Meal Plan Started Or After Today</p>
+  {% endif %}
+
+  {% if template_data.invalidDollars %}
+  <p class="text-danger">Error: Insufficient Dining Dollar Balance</p>
+  {% endif %}
+
+  {% if template_data.invalidSwipes %}
+  <p class="text-danger">Error: Insufficient Meal Swipe Balance</p>
+  {% endif %}
+
+  
+  <form method="POST" class="mb-4">
+    {% csrf_token %}
+    <div class="mb-3" id="swipes-container">
+      <label class="form-label">How many swipes did you use?</label>
+      <input
+        type="number"
+        class="form-control"
+        id="swipes"
+        name="swipes"
+        min="0"
+        placeholder="{{ template_data.oldSwipes }}"
+        required
+      />
+    </div>
+
+    <div class="mb-3" id="dining-container">
+      <label for="dining_dollars" class="form-label">How many dining dollars did you spend?</label>
+      <div class="input-group">
+        <span class="input-group-text">$</span>
+        <input
+          type="number"
+          class="form-control"
+          id="dining_dollars"
+          name="dining_dollars"
+          min="0"
+          placeholder="{{ template_data.oldDollars }}"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Purchase Date (Previous Date: {{ template_data.date }})</label>
+      <input
+        type="date"
+        class="form-control"
+        id="plan_start"
+        name="date"
+        required
+      />
+    </div>
+
+    
+    <div class="d-flex gap-3 mt-4">
+      
+      <button type="submit" class="btn btn-success">Submit Changes</button>
+  </form>
+
+      
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="delete" value="true" />
+        <button type="submit" class="btn btn-danger">Delete Purchase</button>
+      </form>
+    </div>
+
+  {% endif %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container mt-5">
+  {% if not template_data.hasPast %}
+    <div class="alert alert-warning text-center fs-5" style="background-color: #B3A369; color: #003057;">
+      🐝 No Past Meal Plans Found — Time to choose the next one!
+    </div>
+  {% endif %}
+
+  {% if template_data.hasPast %}
+    <h1 class="text-center mb-5" style="color: #003057;">🐝 Past Meal Plans</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for plan in template_data.pastPlans %}
+      <div class="col">
+        <div class="card shadow rounded-4 h-100 border-0" style="background-color: #F5F5F5;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold" style="color: #B3A369;">
+              🗓️ {{ plan.start_date }} → {{ plan.end_date }}
+            </h5>
+            <hr style="border-top: 2px solid #003057;">
+            <p class="card-text"><strong>Starting Swipes:</strong> {{ plan.meal_swipes }}</p>
+            <p class="card-text"><strong>Starting Dining $:</strong> ${{ plan.dining_dollars }}</p>
+            <p class="card-text" style="color: #003057;"><strong>Remaining Swipes:</strong> {{ plan.current_swipes }}</p>
+            <p class="card-text" style="color: #003057;"><strong>Remaining Dining $:</strong> ${{ plan.current_dollars }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% endblock content %}

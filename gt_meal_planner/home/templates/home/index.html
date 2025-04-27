@@ -1,8 +1,39 @@
 {% extends 'base.html' %} {% block content %}
+<div>
+  {% if user.is_authenticated and template_data.active %}
+  <div>
+    {% if template_data.dining_dollars_rate == 1 %}
+    <div class="alert alert-danger text-center">
+      You are spending dining dollars way too quick!
+    </div>
+    {% elif template_data.dining_dollars_rate == -1 %}
+    <div class="alert alert-warning text-center">
+      You are spending dining dollars a little slow, treat yourself!
+    </div>
+    {% else %}
+    <div class="alert alert-success text-center">
+      You are spending dining dollars at a good rate!
+    </div>
+    {% endif %} {% if template_data.swipes_rate == 1 %}
+    <div class="alert alert-danger text-center">
+      You are using your swipes way too quick!
+    </div>
+    {% elif template_data.swipes_rate == -1 %}
+    <div class="alert alert-warning text-center">
+      You are using your swipes a little slow, hit up the dining hall!
+    </div>
+    {% else %}
+    <div class="alert alert-success text-center">
+      You are using your swipes well!
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
 
-<header class="masthead bg-index text-white text-center py-4">
+<header class="masthead bg-index text-center py-4">
   <div class="container d-flex align-items-center flex-column pt-2">
-    <h2>GT Meal Planner</h2>
+    <h2 style="color: #003057">GT Meal Planner</h2>
     <p>Track your spending with ease!</p>
   </div>
 </header>
@@ -10,6 +41,33 @@
 <div class="container d-flex align-items-center flex-column pt-2">
   <p>Sign In and Input Meal Plan Details for Analysis</p>
 </div>
-{% endif %} {% if user.is_authenticated %}
+{% elif user.is_authenticated and not template_data.active %}
 <!-- add meal plan info, swipes, etc-->
+<div class="container d-flex align-items-center flex-column pt-2">
+  <p>Hello, {{template_data.username}}!</p>
+  <a href="{% url 'accounts.baseplans' %}">Please Select A Base Meal Plan</a>
+</div>
+{% elif user.is_authenticated and template_data.active %}
+<div class="container d-flex align-items-center flex-column pt-2">
+  <p style="color: #003057">Hello, {{template_data.username}}!</p>
+  <p style="color: #b3a369">
+    You have {{template_data.swipes}} swipes remaining.
+  </p>
+  <p style="color: #b3a369">
+    You have {{template_data.dollars}} dining dollars remaining.
+  </p>
+  <p>
+    Your meal plan started on {{template_data.start}} and ends on
+    {{template_data.end}}.
+  </p>
+  <img
+    src="data:image/png;base64,{{ template_data.weeklySwipeChart }}"
+    alt="Bar Chart"
+  />
+  <img
+    src="data:image/png;base64,{{ template_data.weeklyDollarChart }}"
+    alt="Bar Chart"
+  />
+</div>
+
 {% endif %} {% endblock content %}

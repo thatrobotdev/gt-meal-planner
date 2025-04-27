@@ -1,0 +1,113 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-8 offset-md-2">
+        <h2>Input Spending</h2>
+        <hr />
+        {% if template_data.active %} {% if template_data.badDate %}
+        <p>
+          Error: You Cannot Input Purchases Before Your Plan Started
+          ({{template_data.startDate}}) Or After The Current Date
+        </p>
+        {% endif %} {% if template_data.badSwipes %}
+        <p>
+          Error: Insufficient Meal Swipe Balance. You Only Have
+          {{template_data.leftSwipes}} Swipes Left
+        </p>
+        {% endif %} {% if template_data.badDollars %}
+        <p>
+          Error: Insufficient Dining Dollar Balance. You Only Have
+          ${{template_data.leftDollars}} Left
+        </p>
+        {% endif %}
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">What did you spend?</label>
+            <select id="spending_type" name="spending_type" class="form-select">
+              <option value="swipes">Swipes</option>
+              <option value="dining_dollars">Dining Dollars</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="swipes-container">
+            <label class="form-label"> How many swipes did you use? </label>
+            <input
+              type="number"
+              class="form-control"
+              id="swipes"
+              name="swipes"
+              min="0"
+              placeholder="e.g. 1"
+              required
+            />
+          </div>
+
+          <div class="mb-3" id="dining-container" style="display: none">
+            <label for="dining_dollars" class="form-label">
+              How many dining dollars did you spend?
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input
+                type="number"
+                class="form-control"
+                id="dining_dollars"
+                name="dining_dollars"
+                min="0"
+                step="any"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"> Purchase Date </label>
+            <input
+              type="date"
+              class="form-control"
+              id="plan_start"
+              name="plan_start"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% else %}
+        <p>You Must Select A Meal Plan Before Inputting Spending</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const spendingType = document.getElementById("spending_type");
+    const swipesContainer = document.getElementById("swipes-container");
+    const diningContainer = document.getElementById("dining-container");
+    const swipesInput = document.getElementById("swipes");
+    const diningInput = document.getElementById("dining_dollars");
+    function toggleInputFields() {
+      if (spendingType.value === "swipes") {
+        swipesContainer.style.display = "block";
+        diningContainer.style.display = "none";
+        swipesInput.required = true;
+        diningInput.required = false;
+      } else if (spendingType.value === "dining_dollars") {
+        swipesContainer.style.display = "none";
+        diningContainer.style.display = "block";
+        swipesInput.required = false;
+        diningInput.required = true;
+      }
+    }
+
+    spendingType.addEventListener("change", toggleInputFields);
+
+    toggleInputFields();
+  });
+</script>
+{% endblock content %}

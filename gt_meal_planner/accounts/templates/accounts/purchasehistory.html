@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container py-5">
+
+  {% if not template_data.active %}
+    <div class="alert text-center fs-5" style="background-color: #B3A369; color: #003057;">
+      You must select a meal plan before making purchases.
+    </div>
+
+  {% elif template_data.noPurchases %}
+    <div class="alert alert-light border text-center fs-5" style="color: #003057;">
+      No purchases have been made for the active plan.
+    </div>
+
+  {% else %}
+    <h1 class="text-center mb-5 fw-bold" style="color: #003057;">Purchase History</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for purchase in template_data.purchases %}
+      <div class="col">
+        <form method="POST" class="h-100">
+          {% csrf_token %}
+          <input type="hidden" name="purchase_id" value="{{ purchase.id }}" />
+          <div class="card h-100 rounded-4 shadow-sm border-0" style="background-color: #F5F5F5;">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <h6 class="fw-semibold" style="color: #003057;">Purchase Date: {{ purchase.date }}</h6>
+                {% if purchase.swipe_cost %}
+                  <p class="mb-1"><strong>Swipes Used:</strong> {{ purchase.swipe_cost }}</p>
+                {% endif %}
+                {% if purchase.dollars_cost %}
+                  <p class="mb-1"><strong>Dining Dollars Spent:</strong> ${{ purchase.dollars_cost }}</p>
+                {% endif %}
+              </div>
+              <div class="mt-3 text-end">
+                <button type="submit" class="btn" style="background-color: #B3A369; color: white;">
+                  Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock content %}
