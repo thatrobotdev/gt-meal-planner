@@ -68,6 +68,8 @@ def index(request):
         days_left = (latest_meal_plan.end_date - current_date).days
         recommended_swipes = swipes_left // days_left
         recommended_dollars = dollars_left / days_left
+        new_recommended_swipes = swipes_left
+        new_recommended_dollars = dollars_left
         dates = []
         spentSwipes = []
         spentDollars = []
@@ -82,7 +84,7 @@ def index(request):
                 currSwipes += p.swipe_cost
                 currDollars += p.dollars_cost
                 weekSwipes += p.swipe_cost
-                weekDollars += p.dollar_cost
+                weekDollars += p.dollars_cost
             dates.append(curr)
             spentSwipes.append(currSwipes)
             spentDollars.append(currDollars)
@@ -90,6 +92,15 @@ def index(request):
         #remaining swipes/dollars + swipes/dollars on graph is the max you can recommend
         minRecSwipes = latest_meal_plan.current_swipes + weekSwipes
         minRecDollars = float(latest_meal_plan.current_dollars + weekDollars)
+        new_recommended_swipes += weekSwipes
+        new_recommended_dollars += weekDollars
+        new_recommended_swipes /= (days_left + 6)
+        new_recommended_dollars = float(new_recommended_dollars) / (days_left + 6)
+        new_recommended_swipes *= 7
+        new_recommended_dollars *= 7
+        res_swipe_rec = min(minRecSwipes, new_recommended_swipes)
+        res_dollar_rec = min(float(new_recommended_dollars), minRecDollars)
+
         figWS, axWS = plt.subplots()
         figWD, axWD = plt.subplots()
         #add graph titles
@@ -102,10 +113,10 @@ def index(request):
         axWS.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
         axWD.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
         #add recommended spending to graph
-        axWS.axhline(y=recommended_swipes, color='red', linestyle='--', linewidth=2, label='TargetSwipes')
-        axWD.axhline(y=recommended_dollars, color='red', linestyle='--', linewidth=2, label='TargetDollars')
-        figWS.text(0.5, 0.01, 'Recommended Weekly Budget: ' + str(min(minRecSwipes, recommended_swipes * 7)) + ' Swipes', ha='center', fontsize=10, color='gray')
-        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(round(min(float(recommended_dollars * 7), minRecDollars), 2)), ha='center', fontsize=10, color='gray')
+        axWS.axhline(y=res_swipe_rec/7, color='red', linestyle='--', linewidth=2, label='TargetSwipes')
+        axWD.axhline(y=res_dollar_rec/7, color='red', linestyle='--', linewidth=2, label='TargetDollars')
+        figWS.text(0.5, 0.01, 'Recommended Weekly Budget: ' + str(res_swipe_rec) + ' Swipes', ha='center', fontsize=10, color='gray')
+        figWD.text(0.5, 0.01, 'Recommended Weekly Budget: $' + str(round(res_dollar_rec, 2)), ha='center', fontsize=10, color='gray')
         #store images of graphs
         bufWS = BytesIO()
         bufWD = BytesIO()
