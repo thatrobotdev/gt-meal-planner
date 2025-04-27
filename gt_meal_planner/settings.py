@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-v#jxs^#+#q-yk)q_tnrf3$a)1j29sb@7n*p(-qk35m5%p0(7_^
 DEBUG = True
 
 ALLOWED_HOSTS = ["gt-meal-planner.jameskerrane.com"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
