@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["gt-meal-planner.jameskerrane.com"]
 
+CSRF_TRUSTED_ORIGINS = ["https://gt-meal-planner.jameskerrane.com"]
+
 # Application definition
 
 INSTALLED_APPS = [
