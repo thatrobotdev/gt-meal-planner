@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-v#jxs^#+#q-yk)q_tnrf3$a)1j29sb@7n*p(-qk35m5%p0(7_^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["gt-meal-planner.jameskerrane.com"]
+ALLOWED_HOSTS = ["gt-meal-planner.jameskerrane.com", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = ["https://gt-meal-planner.jameskerrane.com"]
 
@@ -122,7 +122,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'gt_meal_planner/static/',
+    BASE_DIR / 'gt_meal_planner/static',
 ]
 
 # Default primary key field type

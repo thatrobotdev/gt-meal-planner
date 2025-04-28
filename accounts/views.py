@@ -143,6 +143,10 @@ def map(request):
     nav_loc = requests.get('https://geocode.maps.co/search?q=120+North+Avenue+NW,+Atlanta,+GA+30332&api_key=' + loc_key).json()[0]
     template_data['nav_lat'] = float(nav_loc["lat"])                             #accurate: 33.771037
     template_data['nav_long'] = float(nav_loc["lon"])                        #accurate: -84.391672  
+
+    stucen_loc = requests.get('https://geocode.maps.co/search?q=351+Ferst+Dr+NW,+Atlanta,+GA+30332&api_key=' + loc_key).json()[0]#351 Ferst Dr NW, Atlanta, GA 30332
+    template_data['stucen_lat'] = float(stucen_loc["lat"])                             #accurate: 33.771037
+    template_data['stucen_long'] = float(stucen_loc["lon"])
     return render(request, 'accounts/map.html', {'template_data': template_data})
 
 def inputspending(request):
@@ -290,4 +294,3 @@ def pastmealplans(request):
             template_data['pastPlans'] = past_meal_plans
     else:
         template_data['hasPast'] = False
-    return render(request, 'accounts/pastmealplans.html', {'template_data': template_data})

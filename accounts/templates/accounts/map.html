@@ -29,6 +29,8 @@
     <a hidden id="willage_long">{{template_data.willage_long}}</a>
     <a hidden id="nav_lat">{{template_data.nav_lat}}</a>
     <a hidden id="nav_long">{{template_data.nav_long}}</a>
+    <a hidden id="stucen_lat">{{template_data.stucen_lat}}</a>
+    <a hidden id="stucen_long">{{template_data.stucen_long}}</a>
     <div id="map"></div>
     <script>
         const map = L.map('map').setView([parseFloat(document.getElementById('init_lat').innerText), parseFloat(document.getElementById('init_long').innerText)], 13); // defaults to georgia tech
@@ -36,8 +38,9 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     
         const markers = [
-            { coords: [parseFloat(document.getElementById('willage_lat').innerText), parseFloat(document.getElementById('willage_long').innerText)], name: "West Village Dining Hall" },
-            { coords: [parseFloat(document.getElementById('nav_lat').innerText), parseFloat(document.getElementById('nav_long').innerText)], name: "NAV Dining Hall" }
+            { coords: [parseFloat(document.getElementById('willage_lat').innerText), parseFloat(document.getElementById('willage_long').innerText)], name: "West Village Dining Hall - Meal Swipes" },
+             { coords: [parseFloat(document.getElementById('nav_lat').innerText), parseFloat(document.getElementById('nav_long').innerText)], name: "NAV Dining Hall - Meal Swipes" },
+             { coords: [parseFloat(document.getElementById('stucen_lat').innerText), parseFloat(document.getElementById('stucen_long').innerText)], name: "John Lewis Student Center - Dining Dollars" }
         ];
     
         markers.forEach(marker => {
