@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v#jxs^#+#q-yk)q_tnrf3$a)1j29sb@7n*p(-qk35m5%p0(7_^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["gt-meal-planner.jameskerrane.com"]
 
