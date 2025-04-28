@@ -43,13 +43,13 @@ SESSION_COOKIE_SECURE = True
 # Using a secure-only CSRF cookie makes it more difficult for network traffic sniffers to steal the CSRF token.
 CSRF_COOKIE_SECURE = True
 
+# Site shouldn't be available over both SSL and non-SSL connections, so redirect all connections to HTTPS.
+SECURE_SSL_REDIRECT = True
+
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
     ALLOWED_HOSTS = ["gt-meal-planner.jameskerrane.com"]
-    
-    # Site shouldn't be available over both SSL and non-SSL connections, so redirect all connections to HTTPS.
-    SECURE_SSL_REDIRECT = True
 
 # Application definition
 
